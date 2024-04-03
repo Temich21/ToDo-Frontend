@@ -17,7 +17,7 @@ const PublicRoute = () => {
             try {
                 const response = await refresh().unwrap()
                 dispatch(tokenReceived(response))
-                navigate('/dashboard')
+                navigate('/personal-todo')
             } catch (error) {
                 const e = error as IError
                 toast.error(e?.data?.message || "Login failed")

@@ -14,12 +14,12 @@ const PasswordVisiblity: FC = () => {
                 e.preventDefault()
                 dispatch(setEye(!eye))
             }}
-            className='w-6'
+            className="w-7"
         >
             {
                 eye ?
-                    <FontAwesomeIcon icon={faEye} /> :
-                    <FontAwesomeIcon icon={faEyeSlash} />
+                    <FontAwesomeIcon className="h-6" icon={faEye} /> :
+                    <FontAwesomeIcon className="h-6" icon={faEyeSlash} />
             }
         </button>
     )

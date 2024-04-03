@@ -17,7 +17,7 @@ const LoadingToRedirect = () => {
 
     return (
         <main className="flex justify-center items-center">
-            <section className='w-64 bg-blue-500 text-xl text-white p-4 rounded-sm'>
+            <section className='w-64 bg-customColorBgOne text-xl text-white p-4 rounded-sm'>
                 <h1>You are not authorized!</h1>
                 <h1>Redirecting you in {count} sec</h1>
             </section>

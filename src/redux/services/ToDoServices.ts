@@ -1,39 +1,41 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
-import { ToDoData } from "../../models/ToDoData"
+import { ToDoDataResponse, ToDoAddRequest, ToDoDeleteRequest, ToDoEditRequest } from "../../models/ToDoData"
 import baseQueryWithReauth from "./CustomFetchBaseMulti"
 
+// Можно ли напрямую вызывать userId из редакса тут?
 export const todoAPI = createApi({
     reducerPath: "todoAPI",
     baseQuery: baseQueryWithReauth,
     tagTypes: ['ToDo'],
     endpoints: (builder) => ({
-        getTodos: builder.query<ToDoData[], string>({
+        getTodos: builder.query<ToDoDataResponse[], string>({
             query: (userId) => `todo/${userId}`,
-            providesTags: result => ['ToDo']
+            providesTags: ['ToDo']
         }),
-        addTodo: builder.mutation({
-            query: (todo) => ({
-                url: `todo/${todo.userId}`,
+        addTodo: builder.mutation<void, ToDoAddRequest>({
+            query: ({ requestId, newToDo }) => ({
+                url: `todo/${requestId}`,
                 method: 'POST',
-                body: todo.newToDo
+                body: newToDo
             }),
             invalidatesTags: ['ToDo']
         }),
-        // getUser: builder.mutation<UserResponse, Partial<User>>({
-        //     query: (user) => ({
-        //         url: `registration`,
-        //         method: 'POST',
-        //         body: user,
-        //     }),
-        // }),
-        // createUser: builder.mutation<UserResponse, Partial<User>>({
-        //     query: (user) => ({
-        //         url: `login`,
-        //         method: 'POST',
-        //         body: user,
-        //     }),
-        // }),
+        editToDo: builder.mutation<void, ToDoEditRequest>({
+            query: ({ requestId, editedTodo }) => ({
+                url: `todo/${requestId}`,
+                method: 'PUT',
+                body: editedTodo
+            }),
+            invalidatesTags: ['ToDo']
+        }),
+        deleteToDo: builder.mutation<void, ToDoDeleteRequest>({
+            query: ({ requestId, todoId }) => ({
+                url: `todo/${requestId}/${todoId}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['ToDo']
+        })
     }),
 })
 
-export const { useGetTodosQuery, useAddTodoMutation } = todoAPI
+export const { useGetTodosQuery, useAddTodoMutation, useEditToDoMutation, useDeleteToDoMutation } = todoAPI

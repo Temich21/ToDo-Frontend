@@ -5,6 +5,7 @@ import { authAPI } from './services/AuthServices'
 import { refreshAPI } from './services/RefreshServices'
 import { userAPI } from './services/UserServices'
 import { todoAPI } from './services/ToDoServices'
+import { groupToDoAPI } from './services/GroupToDoServices'
 
 export const store = configureStore({
   reducer: rootReducer,
@@ -14,6 +15,7 @@ export const store = configureStore({
       .concat(refreshAPI.middleware)
       .concat(userAPI.middleware)
       .concat(todoAPI.middleware)
+      .concat(groupToDoAPI.middleware)
 })
 
 export default store
