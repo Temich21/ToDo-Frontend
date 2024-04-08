@@ -36,7 +36,6 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
            let newToDo: ToDoDataRequest | GroupToDoDataRequest = { ...data, priority, completed: false };
 
             if (author) {
-                // If author is provided, explicitly cast newToDo to GroupToDoDataRequest
                 newToDo = { ...newToDo, author } as GroupToDoDataRequest;
             }
             console.log(newToDo);

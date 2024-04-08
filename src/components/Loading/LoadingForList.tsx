@@ -1,10 +1,10 @@
 import { FC } from "react";
 
-const Loading: FC = () => {
+const LoadingForList: FC = () => {
     return (
         <div className="flex justify-center">
             <div aria-label="Loading..." role="status" className="flex items-center space-x-2">
-                <svg className="h-20 w-20 animate-spin stroke-black" viewBox="0 0 256 256">
+                <svg className="h-10 w-10 animate-spin stroke-black" viewBox="0 0 256 256">
                     <line x1="128" y1="32" x2="128" y2="64" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24"></line>
                     <line x1="195.9" y1="60.1" x2="173.3" y2="82.7" strokeLinecap="round" strokeLinejoin="round"
                         strokeWidth="24"></line>
@@ -20,10 +20,10 @@ const Loading: FC = () => {
                     <line x1="60.1" y1="60.1" x2="82.7" y2="82.7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24">
                     </line>
                 </svg>
-                <span className="text-4xl font-medium ">Loading...</span>
+                <span className="text-2xl font-medium ">Loading...</span>
             </div>
         </div>
     )
 }
 
-export default Loading
+export default LoadingForList

@@ -1,15 +1,12 @@
-export interface GroupToDoCreate {
-    title: string
-    participants: string[]
+export type Participant = {
+    _id: string
+    email: string
+    name: string
 }
 
 export interface GroupToDoDataResponse {
     _id: string
-    author: {
-        _id: string
-        email: string
-        name: string
-    }
+    author: Participant
     title: string
     description: string
     deadline: string
@@ -35,6 +32,12 @@ export interface GroupToDoAddRequest {
     newToDo: GroupToDoDataRequest
 }
 
+export interface GroupToDoCreateRequest {
+    title: string,
+    createdBy: string,
+    participants: Participant[]
+}
+
 export interface GroupToDoEditRequest {
     requestId: string
     editedTodo: GroupToDoDataResponse
@@ -43,4 +46,12 @@ export interface GroupToDoEditRequest {
 export interface GroupToDoDeleteRequest {
     requestId: string
     todoId: string
+}
+
+export interface GroupToDoDataInfo {
+    _id: string
+    title: string
+    participants: Participant[]
+    completedToDo: number
+    uncompletedToDo: number
 }

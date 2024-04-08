@@ -3,7 +3,6 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { rootReducer } from './rootReducer'
 import { authAPI } from './services/AuthServices'
 import { refreshAPI } from './services/RefreshServices'
-import { userAPI } from './services/UserServices'
 import { todoAPI } from './services/ToDoServices'
 import { groupToDoAPI } from './services/GroupToDoServices'
 
@@ -13,7 +12,6 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(authAPI.middleware)
       .concat(refreshAPI.middleware)
-      .concat(userAPI.middleware)
       .concat(todoAPI.middleware)
       .concat(groupToDoAPI.middleware)
 })
