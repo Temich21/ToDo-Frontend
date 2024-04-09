@@ -141,9 +141,9 @@ const GroupToDo = () => {
                                 </div>
                                 <div className="relative">
                                     {shownAuthor === todo._id && (
-                                        <div className='absolute left-full top-0 ml-2 bg-white border border-gray-200 shadow-lg p-3 transition-opacity duration-300 ease-in-out'>
-                                            <div>{todo.author.email}</div>
-                                            <div>{todo.author.name}</div>
+                                        <div className='absolute left-full top-0 ml-2 bg-white border border-gray-200 shadow-lg p-3 transition ease-in-out delay-150'>
+                                            <div className="font-semibold">{todo.author.email}</div>
+                                            <div className="font-semibold">{todo.author.name}</div>
                                         </div>
                                     )}
                                 </div>
