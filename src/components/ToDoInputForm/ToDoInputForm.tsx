@@ -38,7 +38,6 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
             if (author) {
                 newToDo = { ...newToDo, author } as GroupToDoDataRequest;
             }
-            console.log(newToDo);
             await addToDo({ requestId: requestId, newToDo: newToDo })
             reset()
             setPriority(priorityOptions[3].value)

@@ -1,9 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import baseQueryWithReauth from "./CustomFetchBaseMulti"
 import { GroupToDoDataResponse, GroupToDoAddRequest, GroupToDoEditRequest, GroupToDoDeleteRequest, GroupToDoDataInfo, GroupToDoCreateRequest, Participant } from "../../models/GroupToDoData"
-import { group } from "console";
 
-// Можно ли напрямую вызывать userId из редакса тут?
 export const groupToDoAPI = createApi({
     reducerPath: "groupToDoAPI",
     baseQuery: baseQueryWithReauth,

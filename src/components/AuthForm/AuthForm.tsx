@@ -147,7 +147,7 @@ const AuthForm: FC = () => {
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter') {
                                             e.preventDefault()
-                                            handleSubmit(handleLogin)()
+                                            isLogin ? handleSubmit(handleLogin)() : handleSubmit(handleRegistration)()
                                         }
                                     }}
                                 />

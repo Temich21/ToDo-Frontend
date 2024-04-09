@@ -8,8 +8,8 @@ import { ServerUrl } from "../../constants"
 import { tokenReceived, logout } from '../reducers/AuthSlice'
 import { Mutex } from 'async-mutex'
 import { AuthResponse } from '../../models/AuhtResponse'
+import { SerializedError } from '../../models/SerializedError'
 
-// create a new mutex
 const mutex = new Mutex()
 
 const baseQuery = fetchBaseQuery({
@@ -27,7 +27,8 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth: BaseQueryFn<
     string | FetchArgs,
     unknown,
-    FetchBaseQueryError
+    FetchBaseQueryError,
+    SerializedError
 > = async (args, api, extraOptions) => {
     await mutex.waitForUnlock()
     let result = await baseQuery(args, api, extraOptions)

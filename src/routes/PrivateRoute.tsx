@@ -10,8 +10,7 @@ import Header from "../components/Header/Header"
 const PrivateRoute = () => {
   const dispatch = useAppDispatch()
   const { isAuth } = useAppSelector((state: RootState) => state.authReducer)
-  const [refresh, { isLoading: isRefreshLoading }] = useRefreshUserMutation()
-
+  const [refresh, { isLoading: isRefreshLoading, error }] = useRefreshUserMutation()
   useEffect(() => {
     const refreshData = async () => {
       try {
@@ -37,7 +36,10 @@ const PrivateRoute = () => {
         <Header />
         <Outlet />
       </> :
-      <LoadingToRedirect />
+      <LoadingToRedirect
+        navigation={'/auth'}
+        message={'You are not Authorized'} // add here error?.data.message || 
+      />
   )
 }
 

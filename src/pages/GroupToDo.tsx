@@ -8,13 +8,15 @@ import Loading from "../components/Loading/Loading";
 import ToDoInputEdit from "../components/ToDoInputEdit/ToDoInputEdit";
 import { useState } from "react";
 import LoadingForList from "../components/Loading/LoadingForList";
+import LoadingToRedirect from "../components/Loading/LoadingToRedirect";
 
 const GroupToDo = () => {
     const { id } = useParams<{ id: string }>()
     const { user } = useAppSelector((state: RootState) => state.authReducer)
     const { editingId } = useAppSelector((state: RootState) => state.editToDoReducer)
 
-    const { data: todos, isLoading } = useGetGroupTodosQuery(`${id}/${user.id}`)
+    const { data: todos, isLoading, error } = useGetGroupTodosQuery(`${id}/${user.id}`)
+    const [shownAuthor, setShownAuthor] = useState<string>('')
     const [addToDo] = useAddGroupTodoMutation()
     const [editToDo] = useEditToDoMutation()
     const [deleteToDo] = useDeleteToDoMutation()
@@ -27,10 +29,24 @@ const GroupToDo = () => {
         navigate('/groups', { replace: true })
     }
 
+    // Move logic to another component
     const [isUserList, setIsUserList] = useState<boolean>(false)
     const { data: userList, isLoading: userListLoading } = useGetUsersListQuery(id || '', {
         skip: !isUserList
     })
+
+    if (isLoading) {
+        return <Loading />
+    }
+
+    // if (error) {
+    //     return (
+    //         <LoadingToRedirect
+    //             navigation={'/groups'}
+    //             message={error?.data.message || ''}
+    //         />
+    //     )
+    // }
 
     return (
         <main className="flex flex-col items-center pt-10">
@@ -40,9 +56,10 @@ const GroupToDo = () => {
                 author={{
                     _id: user.id,
                     email: user.email,
-                    name: 'Artem Rakhmatullin'
+                    name: user.name
                 }}
             />
+            {/* Move logic to another component, start here */}
             <div className="flex gap-3">
                 <button
                     className='btn bg-[#f95959] h-12'
@@ -64,6 +81,7 @@ const GroupToDo = () => {
                     {userList && userList?.length > 1 &&
                         <ul>
                             {userList && userList.map(participant => (
+                                participant._id !== user.id &&
                                 <li
                                     key={participant._id}
                                     className="p-2 font-semibold hover:bg-gray-100 cursor-pointer"
@@ -76,19 +94,22 @@ const GroupToDo = () => {
                     }
                 </div>
             }
-            {isLoading && <Loading />}
+            {/* end */}
+
             {todos?.length === 0 && <div className="text-2xl pl-2">No ToDos!</div>}
             {todos &&
                 <ul>
                     {todos.map((todo) => (
                         todo.author._id === user.id ?
                             <li key={todo._id} className='flex items-center pr-10'>
-                                <img
-                                    className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                                    src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt=""
-                                />
-                                <section className='flex p-2 gap-2 m-2'>
+                                <div
+                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-500 text-white text-xl font-medium ring-2 ring-white"
+                                >
+                                    {todo.author.name[0]}
+                                </div>
+                                <section className={editingId === todo._id
+                                    ? 'flex p-2 gap-2 m-2 border-customColorBorderOne border-2 rounded-md'
+                                    : 'flex p-2 gap-2 m-2'}>
                                     {editingId === todo._id ?
                                         <ToDoInputEdit
                                             todo={todo}
@@ -111,11 +132,21 @@ const GroupToDo = () => {
                                 <section className='flex p-2 gap-2 m-2'>
                                     <ToDoCardWithoutEdit todo={todo} />
                                 </section>
-                                <img
-                                    className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80"
-                                    alt=""
-                                />
+                                <div
+                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-500 text-white text-xl font-medium ring-2 ring-white hover: cursor-default"
+                                    onMouseEnter={() => setShownAuthor(todo._id)}
+                                    onMouseLeave={() => setShownAuthor('')}
+                                >
+                                    {todo.author.name[0]}
+                                </div>
+                                <div className="relative">
+                                    {shownAuthor === todo._id && (
+                                        <div className='absolute left-full top-0 ml-2 bg-white border border-gray-200 shadow-lg p-3 transition-opacity duration-300 ease-in-out'>
+                                            <div>{todo.author.email}</div>
+                                            <div>{todo.author.name}</div>
+                                        </div>
+                                    )}
+                                </div>
                             </li>
                     ))}
                 </ul>

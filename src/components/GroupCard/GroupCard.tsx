@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { GroupToDoDataInfo } from '../../models/GroupToDoData'
 
 const GroupCard = ({ group }: { group: GroupToDoDataInfo }) => {
-  const [isShown, setIsShown] = useState<boolean>(false)
-
   const navigate = useNavigate()
 
   return (
@@ -28,21 +26,10 @@ const GroupCard = ({ group }: { group: GroupToDoDataInfo }) => {
               <>
                 <p
                   className='ml-2 text-customColorBgOne'
-                  // onMouseEnter={() => setIsShown(true)}
-                  // onMouseLeave={() => setIsShown(false)}
+                 
                 >
                   More...
                 </p>
-                {/* {
-                  isShown && (
-                    <div className='absolute bg-white border border-gray-200 shadow-lg p-3 w-48 mt-1'>
-                      <ul>
-                        {group.participants.map((participant, index) => (
-                          index >= 3 && <li key={participant._id}>{participant.email}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )} */}
               </>
             }
             <div>
