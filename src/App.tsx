@@ -6,6 +6,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 import Groups from "./pages/Groups";
 import GroupToDo from "./pages/GroupToDo";
+import Calendar from "./pages/Calendar";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         
         <Route element={<PrivateRoute />}>
           <Route path="/personal-todo" element={<PersonalToDo />} />
+          <Route path="/calendar" element={<Calendar />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/group/:id" element={<GroupToDo />} />
         </Route>

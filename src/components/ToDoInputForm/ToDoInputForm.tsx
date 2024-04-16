@@ -5,10 +5,13 @@ import correctColorSetting from '../../utils/correctColorSetting'
 import { priorityOptions } from '../../models/Priority'
 import { ToDoDataRequest } from '../../models/ToDoData'
 import { GroupToDoDataRequest } from "../../models/GroupToDoData"
+import { motion, MotionConfig } from "framer-motion"
+import AnimatedText from '../AnimatedText/AnimatedText'
+import { formVariants, initialButtonts, inputVariants } from './ToDoInputForm.animation'
 
 interface AddToDoRequest {
     requestId: string
-    newToDo: any // Not Good
+    newToDo: any
 }
 
 interface ToDoInputProps {
@@ -33,7 +36,7 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
 
     const handleAddToDo: SubmitHandler<ToDoDataRequest> = async (data) => {
         try {
-           let newToDo: ToDoDataRequest | GroupToDoDataRequest = { ...data, priority, completed: false };
+            let newToDo: ToDoDataRequest | GroupToDoDataRequest = { ...data, priority, completed: false };
 
             if (author) {
                 newToDo = { ...newToDo, author } as GroupToDoDataRequest;
@@ -52,35 +55,57 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
     }
 
     return (
-        <form
-            className='flex flex-col border-2 border-customColorBorderOne rounded-md p-2 gap-2 mb-4 w-160 shadow-lg'
+        <motion.form
+            className='flex flex-col rounded-md p-2 gap-2 mt-28 mb-4 w-160 border-2'
+            variants={formVariants}
+            initial="hidden"
+            animate="visible"
             onSubmit={handleSubmit(handleAddToDo)}
         >
-            <legend className="bg-customColorBgThree text-customColorBorderOne top-31.2 absolute text-2xl font-bold" style={{ left: 'calc(50% + 6rem)' }}>TODO INPUT</legend>
-            <input
-                id='title'
-                type="text"
-                className='input text-xl'
-                placeholder="Task title"
-                {...register("title", {
-                    required: "Required field"
-                })}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault()
-                        handleSubmit(handleAddToDo)()
-                    }
-                }}
-            />
+            <legend
+                className="bg-customColorBgThree text-customColorBorderOne top-31.2 absolute text-2xl font-bold"
+                style={{ left: 'calc(50% + 6rem)' }}
+            >
+                <AnimatedText
+                    text={'TODO INPUT'}
+                />
+            </legend>
+            <motion.div
+                variants={inputVariants(-100)}
+                initial="hidden"
+                animate="visible"
+            >
+                <input
+                    id='title'
+                    type="text"
+                    className='input text-xl w-full'
+                    placeholder="Task title"
+                    {...register("title", {
+                        required: "Required field"
+                    })}
+                />
+            </motion.div>
             <p className='text-red-600 font-bold pl-2'>{errors.title?.message}</p>
-            <textarea
-                id='description'
-                className='textarea'
-                placeholder="Describe what needs to be done"
-                {...register("description")}
-            />
+            <motion.div
+                variants={inputVariants(-250)}
+                initial="hidden"
+                animate="visible"
+            >
+                <textarea
+                    id='description'
+                    className='textarea w-full'
+                    placeholder="Describe what needs to be done"
+                    {...register("description")}
+
+                />
+            </motion.div>
             <div className='flex justify-between'>
-                <div className='flex gap-3'>
+                <motion.div
+                    className='flex gap-3'
+                    variants={inputVariants(-500)}
+                    initial="hidden"
+                    animate="visible"
+                >
                     <div>
                         <input
                             id='time'
@@ -90,7 +115,7 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
                                 required: "Required field"
                             })}
                         />
-                        <p className='text-red-600 font-bold pl-2'>{errors.title?.message}</p>
+                        <p className='text-red-600 font-bold pl-2'>{errors.deadline?.message}</p>
                     </div>
                     <Select
                         id="priority"
@@ -132,24 +157,41 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
                             }
                         }}
                     />
-                </div>
+                </motion.div>
                 <div className='flex gap-3'>
-                    <button
-                        type='reset'
-                        className='btn-clear bg-[#F39C12] h-12'
-                        onClick={handleReset}
+                    <MotionConfig
+                        transition={{
+                            duration: 0.125,
+                            ease: "easeInOut"
+                        }}
                     >
-                        Clear
-                    </button>
-                    <button
-                        type='submit'
-                        className='btn bg-[#f95959] h-12'
-                    >
-                        Add task
-                    </button>
+                        <motion.button
+                            type='reset'
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95, rotate: "2.5deg" }}
+                            variants={initialButtonts}
+                            initial="hidden"
+                            animate="visible"
+                            className='btn-clear bg-[#F39C12] h-12'
+                            onClick={handleReset}
+                        >
+                            Clear
+                        </motion.button>
+                        <motion.button
+                            type='submit'
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95, rotate: "-2.5deg" }}
+                            variants={initialButtonts}
+                            initial="hidden"
+                            animate="visible"
+                            className='btn bg-[#f95959] h-12'
+                        >
+                            Add task
+                        </motion.button>
+                    </MotionConfig>
                 </div>
             </div>
-        </form>
+        </motion.form>
     )
 }
 

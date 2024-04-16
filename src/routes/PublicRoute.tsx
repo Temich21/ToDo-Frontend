@@ -30,7 +30,11 @@ const PublicRoute = () => {
     }, [])
 
     if (isRefreshLoading) {
-        return <Loading />
+        return (
+            <main className="h-screen flex justify-center items-center">
+                <Loading />
+            </main>
+        )
     }
 
     return (

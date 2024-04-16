@@ -4,6 +4,8 @@ const currentPageToText = (currentPage: string) => {
     switch (pageName) {
         case 'personal-todo':
             return 'Personal ToDo'
+        case 'calendar':
+            return 'Your Calendar'
         case 'group':
             return 'Group ToDo'
         case 'groups':

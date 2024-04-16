@@ -4,6 +4,22 @@ import ToDoInputForm from "../components/ToDoInputForm/ToDoInputForm"
 import ToDoCard from "../components/ToDoCard/ToDoCard"
 import ToDoInputEdit from "../components/ToDoInputEdit/ToDoInputEdit"
 import Loading from "../components/Loading/Loading"
+import { AnimatePresence, motion } from "framer-motion"
+
+const todoVariants = (delay: number) => ({
+    hidden: {
+        x: -100,
+        opacity: 0,
+    },
+    visible: {
+        x: 0,
+        opacity: 1,
+        transition: {
+            delay: 0.2 + (0.1 * delay),
+            duration: 0.5,
+        }
+    },
+})
 
 function PersonalToDo() {
     const { user } = useAppSelector((state: RootState) => state.authReducer)
@@ -22,36 +38,43 @@ function PersonalToDo() {
             />
             {isLoading && <Loading />}
             {todos?.length === 0 && <div className="text-2xl pl-2">No ToDos!</div>}
-            {todos && <ul>
-                {todos && todos.map(todo => {
-                    const listItemClassName = editingId === todo._id
-                        ? 'flex p-2 gap-2 m-2 border-customColorBorderOne border-2 rounded-md'
-                        : 'flex p-2 gap-2 m-2'
+            {todos &&
+                <ul>
+                    <AnimatePresence>
+                        {todos && todos.map((todo, index) => {
+                            const listItemClassName = editingId === todo._id
+                                ? 'flex p-2 gap-2 m-2 border-customColorBorderOne border-2 rounded-md'
+                                : 'flex p-2 gap-2 m-2'
 
-                    return (
-                        <li
-                            className={listItemClassName}
-                            key={todo._id}
-                        >
-                            {editingId === todo._id ?
-                                <ToDoInputEdit
-                                    todo={todo}
-                                    requestId={user.id}
-                                    editToDo={editToDo}
-                                    deleteToDo={deleteToDo}
-                                />
-                                :
-                                <ToDoCard
-                                    todo={todo}
-                                    requestId={user.id}
-                                    editToDo={editToDo}
-                                    deleteToDo={deleteToDo}
-                                />
-                            }
-                        </li>
-                    )
-                })}
-            </ul>}
+                            return (
+                                <motion.li
+                                    className={listItemClassName}
+                                    key={todo._id}
+                                    variants={todoVariants(index)}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
+                                >
+                                    {editingId === todo._id ?
+                                        <ToDoInputEdit
+                                            todo={todo}
+                                            requestId={user.id}
+                                            editToDo={editToDo}
+                                            deleteToDo={deleteToDo}
+                                        />
+                                        :
+                                        <ToDoCard
+                                            todo={todo}
+                                            requestId={user.id}
+                                            editToDo={editToDo}
+                                            deleteToDo={deleteToDo}
+                                        />
+                                    }
+                                </motion.li>
+                            )
+                        })}
+                    </AnimatePresence>
+                </ul>}
 
         </main>
     );

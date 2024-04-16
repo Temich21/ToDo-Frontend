@@ -1,5 +1,6 @@
 export interface ToDoDataResponse {
     _id: string
+    groupTitle?: string
     title: string
     description: string
     deadline: string

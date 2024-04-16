@@ -7,6 +7,24 @@ import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import LoadingForList from '../Loading/LoadingForList'
+import AnimatedText from '../AnimatedText/AnimatedText'
+import { motion } from 'framer-motion'
+
+const inputVariants = (leftPosition: number) => ({
+    hidden: {
+        x: leftPosition,
+        opacity: 0,
+    },
+    visible: {
+        x: 0,
+        opacity: 1,
+        transition: {
+            type: "spring",
+            stiffness: 100,
+            damping: 10,
+        },
+    },
+})
 
 const NewGroupInput = () => {
     const { user } = useAppSelector((state: RootState) => state.authReducer)
@@ -75,25 +93,34 @@ const NewGroupInput = () => {
 
     return (
         <form
-            className='flex flex-col border-2 border-customColorBorderOne rounded-md p-2 gap-2 mb-4 w-160 shadow-lg'
+            className='flex flex-col border-2 border-customColorBorderOne rounded-md p-2 gap-2 mt-28 mb-4 w-160 shadow-lg'
             onSubmit={handleSubmit(handleCreateNewGroup)}
         >
             <legend
                 className="bg-customColorBgThree text-customColorBorderOne top-31.2 absolute text-2xl font-bold"
                 style={{ left: 'calc(50% + 2rem)' }}
             >
-                CREATE GROUP TODO
+                <AnimatedText
+                    text={'CREATE GROUP TODO'}
+                />
             </legend>
-            <input
-                id='title'
-                type="text"
-                className='input text-xl'
-                placeholder="Group title"
-                {...register("title", {
-                    required: "Required field"
-                })}
-            />
+            <motion.div
+                variants={inputVariants(-100)}
+                initial="hidden"
+                animate="visible"
+            >
+                <input
+                    id='title'
+                    type="text"
+                    className='input w-full text-xl'
+                    placeholder="Group title"
+                    {...register("title", {
+                        required: "Required field"
+                    })}
+                />
+            </motion.div>
             <p className='text-red-600 font-bold pl-2'>{errors.title?.message}</p>
+            {/* Separate component */}
             <div>
                 <input
                     type="text"
@@ -159,6 +186,7 @@ const NewGroupInput = () => {
                     </ul> :
                     <div className='text-xl font-semibold'>No participants</div>
             }
+            {/* Separate component */}
             <div className='flex justify-between'>
                 <div className='flex gap-3'>
                     <button

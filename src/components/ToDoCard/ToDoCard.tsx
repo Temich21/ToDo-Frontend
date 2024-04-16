@@ -1,7 +1,6 @@
 import { useAppDispatch } from "../../redux/store"
 import { setEditingId } from "../../redux/reducers/EditToDoSlice"
 import { ToDoDataResponse } from '../../models/ToDoData'
-import { GroupToDoDataResponse } from "../../models/GroupToDoData"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faCircleCheck, faTrashCan } from '@fortawesome/free-regular-svg-icons'
 import { faPencil, faFlag } from '@fortawesome/free-solid-svg-icons'
@@ -11,7 +10,7 @@ import { toast } from "react-toastify"
 
 interface EditToDoRequest {
   requestId: string
-  editedTodo: any // Not Good
+  editedTodo: any 
 }
 
 interface DeleteToDoRequest {

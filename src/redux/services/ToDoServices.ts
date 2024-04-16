@@ -34,8 +34,12 @@ export const todoAPI = createApi({
                 method: 'DELETE'
             }),
             invalidatesTags: ['ToDo']
-        })
+        }),
+        getAllToDos: builder.query<ToDoDataResponse[], string>({
+            query: (userId) => `todo/all/${userId}`,
+            providesTags: ['ToDo']
+        }),
     }),
 })
 
-export const { useGetTodosQuery, useAddTodoMutation, useEditToDoMutation, useDeleteToDoMutation } = todoAPI
+export const { useGetTodosQuery, useAddTodoMutation, useEditToDoMutation, useDeleteToDoMutation, useGetAllToDosQuery } = todoAPI

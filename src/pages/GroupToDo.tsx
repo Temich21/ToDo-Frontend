@@ -7,15 +7,18 @@ import ToDoCardWithoutEdit from "../components/ToDoCard/ToDoCardWithoutEdit";
 import Loading from "../components/Loading/Loading";
 import ToDoInputEdit from "../components/ToDoInputEdit/ToDoInputEdit";
 import { useState } from "react";
-import LoadingForList from "../components/Loading/LoadingForList";
+import ParticipantsModul from "../components/Moduls/PrticipantsModul";
 import LoadingToRedirect from "../components/Loading/LoadingToRedirect";
+import Modul from "../components/Moduls/Modul";
+import { motion } from "framer-motion";
+
 
 const GroupToDo = () => {
     const { id } = useParams<{ id: string }>()
     const { user } = useAppSelector((state: RootState) => state.authReducer)
     const { editingId } = useAppSelector((state: RootState) => state.editToDoReducer)
 
-    const { data: todos, isLoading, error } = useGetGroupTodosQuery(`${id}/${user.id}`)
+    const { data: todos, isLoading: isGroupToDoLoading, error } = useGetGroupTodosQuery(`${id}/${user.id}`)
     const [shownAuthor, setShownAuthor] = useState<string>('')
     const [addToDo] = useAddGroupTodoMutation()
     const [editToDo] = useEditToDoMutation()
@@ -30,12 +33,12 @@ const GroupToDo = () => {
     }
 
     // Move logic to another component
-    const [isUserList, setIsUserList] = useState<boolean>(false)
-    const { data: userList, isLoading: userListLoading } = useGetUsersListQuery(id || '', {
-        skip: !isUserList
+    const [shownPopUpParticipants, setShownPopUpParticipants] = useState<boolean>(false)
+    const { data: usersList, isLoading: isUserListsLoading } = useGetUsersListQuery(id || '', {
+        skip: !shownPopUpParticipants
     })
 
-    if (isLoading) {
+    if (isGroupToDoLoading) {
         return <Loading />
     }
 
@@ -60,39 +63,30 @@ const GroupToDo = () => {
                 }}
             />
             {/* Move logic to another component, start here */}
-            <div className="flex gap-3">
-                <button
-                    className='btn bg-[#f95959] h-12'
-                    onClick={() => setIsUserList(true)}
+            <div className="flex w-160 justify-around">
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    className='btn bg-[#ffc93c] h-12'
+                    onClick={() => setShownPopUpParticipants(true)}
                 >
                     View All Participants
-                </button>
-                <button
-                    className='btn bg-[#f95959] h-12'
+                </motion.button>
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    className='btn bg-[#f76b8a] h-12'
                     onClick={handleLeaveGroup}
                 >
                     Leave group
-                </button>
+                </motion.button>
             </div>
-            {isUserList &&
-                <div className="">
-                    {userListLoading && <LoadingForList />}
-                    {userList?.length === 1 && <div>Only you</div>}
-                    {userList && userList?.length > 1 &&
-                        <ul>
-                            {userList && userList.map(participant => (
-                                participant._id !== user.id &&
-                                <li
-                                    key={participant._id}
-                                    className="p-2 font-semibold hover:bg-gray-100 cursor-pointer"
-                                >
-                                    <div>{participant.email}</div>
-                                    <div>{participant.name}</div>
-                                </li>
-                            ))}
-                        </ul>
-                    }
-                </div>
+            {
+                shownPopUpParticipants &&
+                <Modul onClose={() => setShownPopUpParticipants(false)}>
+                    <ParticipantsModul
+                        usersList={usersList || []}
+                        isLoading={isUserListsLoading}
+                    />
+                </Modul>
             }
             {/* end */}
 

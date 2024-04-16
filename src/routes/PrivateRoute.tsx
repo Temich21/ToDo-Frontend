@@ -27,7 +27,11 @@ const PrivateRoute = () => {
   }, [])
 
   if (isRefreshLoading) {
-    return <Loading />
+    return (
+      <main className="h-screen flex justify-center items-center">
+        <Loading />
+      </main>
+    )
   }
 
   return (
@@ -38,7 +42,7 @@ const PrivateRoute = () => {
       </> :
       <LoadingToRedirect
         navigation={'/auth'}
-        message={'You are not Authorized'} // add here error?.data.message || 
+        message={'You are not Authorized!'} // add here error?.data.message || 
       />
   )
 }
