@@ -5,9 +5,9 @@ import correctColorSetting from '../../utils/correctColorSetting'
 import { priorityOptions } from '../../models/Priority'
 import { ToDoDataRequest } from '../../models/ToDoData'
 import { GroupToDoDataRequest } from "../../models/GroupToDoData"
-import { motion, MotionConfig } from "framer-motion"
+import { motion, MotionConfig, AnimatePresence } from "framer-motion"
 import AnimatedText from '../AnimatedText/AnimatedText'
-import { formVariants, initialButtonts, inputVariants } from './ToDoInputForm.animation'
+import { formVariants, initialButtonts, inputVariants, movingVariants } from './ToDoInputForm.animation'
 
 interface AddToDoRequest {
     requestId: string
@@ -85,7 +85,19 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
                     })}
                 />
             </motion.div>
-            <p className='text-red-600 font-bold pl-2'>{errors.title?.message}</p>
+            <AnimatePresence >
+                {errors.title && (
+                    <motion.p
+                        variants={movingVariants(0)}
+                        initial="hidden"
+                        animate="visible"
+                        exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
+                        className='text-red-600 font-bold pl-2'
+                    >
+                        {errors.title.message}
+                    </motion.p>
+                )}
+            </AnimatePresence>
             <motion.div
                 variants={inputVariants(-250)}
                 initial="hidden"
@@ -115,7 +127,19 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
                                 required: "Required field"
                             })}
                         />
-                        <p className='text-red-600 font-bold pl-2'>{errors.deadline?.message}</p>
+                        <AnimatePresence >
+                            {errors.deadline && (
+                                <motion.p
+                                    variants={movingVariants(0)}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
+                                    className='text-red-600 font-bold pl-2'
+                                >
+                                    {errors.deadline?.message}
+                                </motion.p>
+                            )}
+                        </AnimatePresence>
                     </div>
                     <Select
                         id="priority"

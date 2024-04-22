@@ -6,7 +6,7 @@ const ParticipantsModal = ({ usersList, isLoading }: { usersList: Participant[],
         <>
             <h1 className='text-2xl font-bold mb-2'>Participants List</h1>
             {isLoading && <LoadingForList />}
-            {usersList?.length === 1 && <div>Only you</div>}
+            {usersList?.length === 1 && <div className="pb-2">Only you</div>}
             {usersList && usersList.length > 1 &&
                 <ul className="w-full max-h-64 overflow-auto">
                     {usersList.map(participant => (

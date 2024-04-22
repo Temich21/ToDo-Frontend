@@ -6,33 +6,18 @@ import { RootState, useAppSelector } from '../../redux/store'
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import LoadingForList from '../Loading/LoadingForList'
 import AnimatedText from '../AnimatedText/AnimatedText'
-import { motion } from 'framer-motion'
-
-const inputVariants = (leftPosition: number) => ({
-    hidden: {
-        x: leftPosition,
-        opacity: 0,
-    },
-    visible: {
-        x: 0,
-        opacity: 1,
-        transition: {
-            type: "spring",
-            stiffness: 100,
-            damping: 10,
-        },
-    },
-})
+import { motion, AnimatePresence } from 'framer-motion'
+import AddNewParticipant from "../AddNewParticipant/AddNewParticipant"
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { buttonsVariats, formVariants, inputVariants, movingVariants } from './NewGroupInput.animation'
+import filterExistingParticipants from '../../utils/filterExistingParticipants'
 
 const NewGroupInput = () => {
     const { user } = useAppSelector((state: RootState) => state.authReducer)
 
-    const [participants, setParticipants] = useState<Participant[]>([])
-    const [activeParticipant, setActiveParticipant] = useState<string>('')
-    const [newParticipant, setNewParticipant] = useState<Participant>({} as Participant)
-    const [participantInput, setParticipantInput] = useState<string>('')
+    const navigate = useNavigate()
 
     const {
         register,
@@ -41,12 +26,33 @@ const NewGroupInput = () => {
         formState: { errors },
     } = useForm<GroupToDoCreateRequest>()
 
+    const handleReset = () => {
+        reset()
+        setParticipants([])
+    }
+
+    // New Participants Adding
+    const [participants, setParticipants] = useState<Participant[]>([])
+    const [activeParticipant, setActiveParticipant] = useState<string>('')
+    const [newParticipant, setNewParticipant] = useState<Participant>({} as Participant)
+    const [participantInput, setParticipantInput] = useState<string>('')
+
+    const handleChooseParticipant = (participant: Participant) => {
+        setNewParticipant(participant)
+        setActiveParticipant(participant._id)
+    }
+
+    const handleAddParticipant = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        setParticipants(currentParticipants => [...currentParticipants, newParticipant])
+        setParticipantInput('')
+    }
+
+    // New Group Creating
     const [createNewGroup] = useCreateNewGroupMutation()
     const { data: possibleParticipantsList, isLoading } = useGetRequiredUsersQuery(participantInput, {
         skip: participantInput.length === 0,
     })
-
-    const navigate = useNavigate()
 
     const handleCreateNewGroup: SubmitHandler<GroupToDoCreateRequest> = async (data) => {
         try {
@@ -64,36 +70,12 @@ const NewGroupInput = () => {
         }
     }
 
-    const handleParticipant = async (e: { target: { value: React.SetStateAction<string> } }) => {
-        setParticipantInput(e.target.value)
-    }
-
-    const handleChooseParticipant = (participant: Participant) => {
-        setNewParticipant(participant)
-        setActiveParticipant(participant._id)
-    }
-
-    const handleAddParticipant = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
-
-        const exists = participants.some(participant => participant.email === newParticipant.email)
-
-        if (!exists) {
-            setParticipants(currentParticipants => [...currentParticipants, newParticipant])
-            setParticipantInput('')
-        } else {
-            console.log('Participant already exists:', newParticipant.email)
-        }
-    }
-
-    const handleReset = () => {
-        reset()
-        setParticipants([])
-    }
-
     return (
-        <form
-            className='flex flex-col border-2 border-customColorBorderOne rounded-md p-2 gap-2 mt-28 mb-4 w-160 shadow-lg'
+        <motion.form
+            className='flex flex-col border-2 rounded-md p-2 gap-2 mt-28 mb-4 w-160 shadow-lg'
+            variants={formVariants}
+            initial="hidden"
+            animate="visible"
             onSubmit={handleSubmit(handleCreateNewGroup)}
         >
             <legend
@@ -119,92 +101,97 @@ const NewGroupInput = () => {
                     })}
                 />
             </motion.div>
-            <p className='text-red-600 font-bold pl-2'>{errors.title?.message}</p>
-            {/* Separate component */}
-            <div>
-                <input
-                    type="text"
-                    className='input w-64'
-                    value={participantInput}
-                    placeholder="Participant email or name"
-                    onChange={handleParticipant}
-                />
-                <button
-                    className='btn-clear bg-[#F39C12] h-10 ml-3'
-                    onClick={handleAddParticipant}
-                >
-                    Add Participant
-                </button>
-                {
-                    participantInput.length > 0 && (
-                        isLoading ?
-                            <div className='flex items-center justify-center absolute w-64 h-24 bg-white mt-2 rounded-md'>
-                                <LoadingForList />
-                            </div> :
-                            (possibleParticipantsList && possibleParticipantsList.length > 0 ?
-                                <ul className="w-64 absolute mt-2 max-h-48 overflow-auto bg-white rounded-md">
-                                    {possibleParticipantsList && possibleParticipantsList.map(participant => (
-                                        participant._id !== user.id &&
-                                        <li
-                                            key={participant._id}
-                                            className="p-2 font-semibold hover:bg-gray-100 cursor-pointer"
-                                            style={activeParticipant === participant._id ? { backgroundColor: '#79c2d0' } : {}}
-                                            onClick={() => handleChooseParticipant(participant)}
-                                        >
-                                            <div>{participant.email}</div>
-                                            <div>{participant.name}</div>
-                                        </li>
-                                    ))}
-                                </ul>
-                                :
-                                <div className='flex items-center justify-center absolute w-64 h-20 bg-white mt-2 rounded-md text-xl font-bold'>
-                                    Can't find participants
-                                </div>
-                            )
-                    )
-                }
-            </div>
+            <AnimatePresence>
+                {errors.title && (
+                    <motion.p
+                        variants={movingVariants(0)}
+                        initial="hidden"
+                        animate="visible"
+                        exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
+                        className='text-red-600 font-bold pl-2'
+                    >
+                        {errors.title.message}
+                    </motion.p>
+                )}
+            </AnimatePresence>
+            <AddNewParticipant
+                userId={user.id}
+                participantInput={participantInput}
+                handleParticipantInput={(e: React.ChangeEvent<HTMLInputElement>) => setParticipantInput(e.target.value)}
+                handleAddParticipant={handleAddParticipant}
+                possibleParticipantsList={filterExistingParticipants(possibleParticipantsList || [], participants)}
+                usersList={participants}
+                activeParticipant={activeParticipant}
+                handleChooseParticipant={handleChooseParticipant}
+                isLoading={isLoading}
+            />
             {
                 participants.length > 0 ?
-                    <ul className='flex flex-wrap gap-3 w-160'>
-                        {participants.map((participant, index) => (
-                            <li
-                                className='border-dashed border-2 border-customColorBorderOne p-1 font-semibold'
-                                key={participant._id}
-                            >
-                                {participant.email}
-                                <FontAwesomeIcon
-                                    className='text-customColorBorderOne ml-2 cursor-pointer'
-                                    icon={faXmark}
-                                    onClick={() => {
-                                        const newParticipants = participants.filter((_, i) => i !== index);
-                                        setParticipants(newParticipants);
-                                    }}
-                                />
-                            </li>
-                        ))}
-                    </ul> :
-                    <div className='text-xl font-semibold'>No participants</div>
+
+                    <ul
+                        className='flex flex-wrap gap-3 w-160'
+                    >
+                        <AnimatePresence>
+                            {participants.map((participant, index) => (
+                                <motion.li
+                                    key={participant._id}
+                                    className='border-dashed border-2 border-customColorBorderOne p-1 font-semibold'
+                                    variants={movingVariants(0)}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
+                                >
+                                    {participant.email}
+                                    <FontAwesomeIcon
+                                        className='text-customColorBorderOne ml-2 cursor-pointer'
+                                        icon={faXmark}
+                                        onClick={() => {
+                                            const newParticipants = participants.filter((_, i) => i !== index);
+                                            setParticipants(newParticipants);
+                                        }}
+                                    />
+                                </motion.li>
+                            ))}
+                        </AnimatePresence>
+                    </ul>
+                    :
+                    <motion.div
+                        className='text-xl font-semibold'
+                        variants={movingVariants(1.5)}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        No participants
+                    </motion.div>
             }
-            {/* Separate component */}
             <div className='flex justify-between'>
                 <div className='flex gap-3'>
-                    <button
+                    <motion.button
                         type='reset'
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ y: -5 }}
+                        variants={buttonsVariats}
+                        initial="hidden"
+                        animate="visible"
                         className='btn-clear bg-[#F39C12] h-12'
                         onClick={handleReset}
                     >
                         Clear
-                    </button>
-                    <button
+                    </motion.button>
+                    <motion.button
                         type='submit'
+                        whileHover="hover"
+                        whileTap="tap"
+                        variants={buttonsVariats}
+                        initial="hidden"
+                        animate="visible"
                         className='btn bg-[#f95959] h-12'
                     >
                         Create
-                    </button>
+                    </motion.button>
                 </div>
             </div>
-        </form>
+        </motion.form>
     )
 }
 

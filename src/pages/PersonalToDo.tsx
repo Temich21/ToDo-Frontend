@@ -37,7 +37,15 @@ function PersonalToDo() {
                 addToDo={addToDo}
             />
             {isLoading && <Loading />}
-            {todos?.length === 0 && <div className="text-2xl pl-2">No ToDos!</div>}
+            {todos?.length === 0 &&
+                <motion.div
+                    className="text-2xl pl-2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1, transition: { delay: 1 } }}
+                >
+                    No ToDos!
+                </motion.div>
+            }
             {todos &&
                 <ul>
                     <AnimatePresence>

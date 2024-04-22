@@ -5,7 +5,7 @@ import { GroupToDoDataResponse, GroupToDoAddRequest, GroupToDoEditRequest, Group
 export const groupToDoAPI = createApi({
     reducerPath: "groupToDoAPI",
     baseQuery: baseQueryWithReauth,
-    tagTypes: ['GroupToDo', 'Group'],
+    tagTypes: ['GroupToDo', 'Group', 'GroupParticipants'],
     endpoints: (builder) => ({
         getGroupTodos: builder.query<GroupToDoDataResponse[], string>({
             query: (groupId) => `group/${groupId}`,
@@ -60,6 +60,7 @@ export const groupToDoAPI = createApi({
                 url: `group/${groupId}/users`,
                 method: 'GET',
             }),
+            providesTags: ['GroupParticipants']
         }),
         leaveGroup: builder.mutation<void, { groupId: string; userId: string }>({
             query: ({ groupId, userId }) => ({
@@ -68,6 +69,14 @@ export const groupToDoAPI = createApi({
                 body: { userId }, 
             }),
             invalidatesTags: ['Group']
+        }),
+        addNewParticipant: builder.mutation<void, { groupId: string; newParticipant: Participant }>({
+            query: ({ groupId, newParticipant }) => ({
+                url: `group/${groupId}/new-participant`,
+                method: 'POST',
+                body: newParticipant, 
+            }),
+            invalidatesTags: ['GroupParticipants']
         }),
     }),
 })
@@ -81,5 +90,6 @@ export const {
     useCreateNewGroupMutation,
     useGetRequiredUsersQuery,
     useGetUsersListQuery,
-    useLeaveGroupMutation
+    useLeaveGroupMutation,
+    useAddNewParticipantMutation
 } = groupToDoAPI
