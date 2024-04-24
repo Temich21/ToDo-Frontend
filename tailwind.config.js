@@ -9,11 +9,21 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'lg': '670px',
+        'md': '630px',
+        'sm': '550px',
+        'xs': '450px',
+      },
       inset: {
         '31.2': '7.8rem',
       },
       width: {
+        '100': '25rem',
+        '112': '28rem',
+        '128': '32rem',
         '144': '36rem',
+        '148': '37rem',
         '160': '40rem',
         '250': '62.5rem',
       },

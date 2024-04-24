@@ -1,6 +1,6 @@
 import { FC } from "react"
-import { setEye } from "../../redux/reducers/EyeSlice"
-import { useAppDispatch, useAppSelector } from "../../redux/store"
+import { setEye } from "../../../redux/reducers/EyeSlice"
+import { useAppDispatch, useAppSelector } from "../../../redux/store"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
@@ -14,7 +14,7 @@ const PasswordVisiblity: FC = () => {
                 e.preventDefault()
                 dispatch(setEye(!eye))
             }}
-            className="w-7"
+            className="w-9"
         >
             {
                 eye ?

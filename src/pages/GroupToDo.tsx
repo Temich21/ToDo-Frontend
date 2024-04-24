@@ -6,7 +6,7 @@ import ToDoInputForm from "../components/ToDoInputForm/ToDoInputForm";
 import ToDoCard from "../components/ToDoCard/ToDoCard";
 import ToDoCardWithoutEdit from "../components/ToDoCard/ToDoCardWithoutEdit";
 import Loading from "../components/Loading/Loading";
-import GroupToDoFeatures from '../components/GroupToDoFeatures/GroupToDoFeatures';
+import GroupToDoFeatures from '../components/GroupCard/GroupToDoFeatures/GroupToDoFeatures';
 import ToDoInputEdit from "../components/ToDoInputEdit/ToDoInputEdit";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"

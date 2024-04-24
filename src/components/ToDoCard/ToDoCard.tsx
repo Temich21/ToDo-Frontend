@@ -10,7 +10,7 @@ import { toast } from "react-toastify"
 
 interface EditToDoRequest {
   requestId: string
-  editedTodo: any 
+  editedTodo: any
 }
 
 interface DeleteToDoRequest {
@@ -20,7 +20,7 @@ interface DeleteToDoRequest {
 
 interface ToDoCardProps {
   todo: ToDoDataResponse
-  requestId: string 
+  requestId: string
   editToDo: (request: EditToDoRequest) => Promise<any>
   deleteToDo: (request: DeleteToDoRequest) => Promise<any>
 }
@@ -42,7 +42,10 @@ const ToDoCard = ({ todo, requestId, editToDo, deleteToDo }: ToDoCardProps) => {
 
   return (
     <>
-      <div className='hover:cursor-pointer' style={{ color: correctColorSetting(todo.priority) }}>
+      <div
+        className='hover:cursor-pointer'
+        style={{ color: correctColorSetting(todo.priority) }}
+      >
         {
           todo.completed ?
             <FontAwesomeIcon
@@ -57,22 +60,23 @@ const ToDoCard = ({ todo, requestId, editToDo, deleteToDo }: ToDoCardProps) => {
         }
       </div>
       <div
+        className="w-full lg:w-148"
         style={
           todo.completed ? { textDecoration: 'line-through', textDecorationThickness: '2px' } : {}
         }
       >
         <div className='flex justify-between'>
-          <h3 className='w-144 font-bold text-xl'>
+          <h3 className='font-bold text-xl'>
             {todo.title}
           </h3>
-          <div className='flex gap-2'>
+          <div className='flex gap-4'>
             <FontAwesomeIcon
               icon={faPencil}
-              className='hover:cursor-pointer'
+              className='w-6 h-6 hover:cursor-pointer'
               onClick={() => dispatch(setEditingId(todo._id))}
             />
             <FontAwesomeIcon icon={faTrashCan}
-              className='hover:cursor-pointer'
+              className='w-6 h-6 hover:cursor-pointer'
               onClick={() => deleteToDo({ requestId: requestId, todoId: todo._id })}
             />
           </div>

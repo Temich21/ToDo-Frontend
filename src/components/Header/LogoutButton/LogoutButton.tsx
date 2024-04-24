@@ -1,6 +1,6 @@
-import { useAppDispatch } from "../../redux/store"
-import { logout, tokenRemoved } from '../../redux/reducers/AuthSlice'
-import { useLogoutUserMutation } from '../../redux/services/AuthServices'
+import { useAppDispatch } from "../../../redux/store"
+import { logout, tokenRemoved } from '../../../redux/reducers/AuthSlice'
+import { useLogoutUserMutation } from '../../../redux/services/AuthServices'
 import { FC } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"

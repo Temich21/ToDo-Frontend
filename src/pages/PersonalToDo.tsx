@@ -47,12 +47,14 @@ function PersonalToDo() {
                 </motion.div>
             }
             {todos &&
-                <ul>
+                <ul
+                    className="w-[95%] lg:w-160"
+                >
                     <AnimatePresence>
                         {todos && todos.map((todo, index) => {
                             const listItemClassName = editingId === todo._id
-                                ? 'flex p-2 gap-2 m-2 border-customColorBorderOne border-2 rounded-md'
-                                : 'flex p-2 gap-2 m-2'
+                                ? 'flex p-2 gap-2 border-customColorBorderOne border-2 rounded-md'
+                                : 'flex p-2 gap-2'
 
                             return (
                                 <motion.li

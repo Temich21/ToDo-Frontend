@@ -7,7 +7,6 @@ module.exports = plugin(function ({ addComponents }) {
             borderRadius: '.25rem',
             fontWeight: '600',
             transition: 'background-color .3s ease',
-            // backgroundColor: '#374151',
             color: '#ffffff',
             '&:hover': {
                 backgroundColor: '#4b5563',
@@ -18,7 +17,6 @@ module.exports = plugin(function ({ addComponents }) {
             borderRadius: '.25rem',
             fontWeight: '600',
             transition: 'background-color .3s ease',
-            // backgroundColor: '#9ca3af',
             color: '#ffffff',
             '&:hover': {
                 backgroundColor: '#6b7280',

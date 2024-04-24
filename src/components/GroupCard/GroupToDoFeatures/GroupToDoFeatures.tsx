@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { useLeaveGroupMutation, useGetUsersListQuery, useGetRequiredUsersQuery, useAddNewParticipantMutation } from '../../redux/services/GroupToDoServices';
-import AddNewParticipant from "../AddNewParticipant/AddNewParticipant"
-import Modul from '../Moduls/Modul'
-import ParticipantsModul from '../Moduls/ParticipantsModul'
+import { useLeaveGroupMutation, useGetUsersListQuery, useGetRequiredUsersQuery, useAddNewParticipantMutation } from '../../../redux/services/GroupToDoServices';
+import AddNewParticipant from "../../AddNewParticipant/AddNewParticipant"
+import Modul from '../../Moduls/Modul'
+import ParticipantsModul from '../../Moduls/ParticipantsModul'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { motion } from "framer-motion";
-import { Participant } from '../../models/GroupToDoData'
-import filterExistingParticipants from '../../utils/filterExistingParticipants';
+import { Participant } from '../../../models/GroupToDoData'
+import filterExistingParticipants from '../../../utils/filterExistingParticipants';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faPersonRunning } from '@fortawesome/free-solid-svg-icons'
 

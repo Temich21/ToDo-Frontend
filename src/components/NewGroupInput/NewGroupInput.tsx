@@ -108,7 +108,7 @@ const NewGroupInput = () => {
                         initial="hidden"
                         animate="visible"
                         exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
-                        className='text-red-600 font-bold pl-2'
+                        className='text-red-600 font-semibold pl-2'
                     >
                         {errors.title.message}
                     </motion.p>

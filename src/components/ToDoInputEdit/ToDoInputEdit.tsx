@@ -62,26 +62,26 @@ const ToDoInputEdit = ({ todo, requestId, editToDo, deleteToDo }: ToDoEditProps)
 
     return (
         <>
-            <form className='flex flex-col p-2 gap-2 w-160'>
-                <div className='flex justify-between'>
+            <form className='flex flex-col gap-2 w-160'>
+                <div className='flex justify-between items-center gap-2'>
                     <input
                         id='title'
                         type="text"
-                        className='input w-144 text-xl'
+                        className='input w-full text-base md:text-xl'
                         placeholder="Task title"
                         {...register("title", {
                             required: "Required field"
                         })}
                     />
-                    <div className='flex gap-2'>
+                    <div className='flex gap-4'>
                         <FontAwesomeIcon
                             icon={faCheck}
-                            className='hover:cursor-pointer'
+                            className='w-8 h-8 hover:cursor-pointer'
                             onClick={handleSubmit(handleEditSubmit)}
                         />
                         <FontAwesomeIcon
                             icon={faTrashCan}
-                            className='hover:cursor-pointer'
+                            className='w-8 h-8 hover:cursor-pointer'
                             onClick={() => deleteToDo({ requestId: requestId, todoId: todo._id })}
                         />
                     </div>

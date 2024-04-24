@@ -8,6 +8,7 @@ import { GroupToDoDataRequest } from "../../models/GroupToDoData"
 import { motion, MotionConfig, AnimatePresence } from "framer-motion"
 import AnimatedText from '../AnimatedText/AnimatedText'
 import { formVariants, initialButtonts, inputVariants, movingVariants } from './ToDoInputForm.animation'
+import Button from '../Button/Button'
 
 interface AddToDoRequest {
     requestId: string
@@ -56,15 +57,13 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
 
     return (
         <motion.form
-            className='flex flex-col rounded-md p-2 gap-2 mt-28 mb-4 w-160 border-2'
+            className='flex flex-col rounded-md p-2 gap-2 mt-28 mb-4 w-[95%] lg:w-160 border-2'
             variants={formVariants}
             initial="hidden"
             animate="visible"
-            onSubmit={handleSubmit(handleAddToDo)}
         >
             <legend
-                className="bg-customColorBgThree text-customColorBorderOne top-31.2 absolute text-2xl font-bold"
-                style={{ left: 'calc(50% + 6rem)' }}
+                className="bg-customColorBgThree text-customColorBorderOne top-31.2 absolute text-2xl font-bold ml-10"
             >
                 <AnimatedText
                     text={'TODO INPUT'}
@@ -78,7 +77,7 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
                 <input
                     id='title'
                     type="text"
-                    className='input text-xl w-full'
+                    className='input text-base md:text-xl w-full'
                     placeholder="Task title"
                     {...register("title", {
                         required: "Required field"
@@ -92,7 +91,7 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
                         initial="hidden"
                         animate="visible"
                         exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
-                        className='text-red-600 font-bold pl-2'
+                        className='text-red-600 font-semibold pl-2'
                     >
                         {errors.title.message}
                     </motion.p>
@@ -105,15 +104,15 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
             >
                 <textarea
                     id='description'
-                    className='textarea w-full'
+                    className='textarea w-full text-base'
                     placeholder="Describe what needs to be done"
                     {...register("description")}
 
                 />
             </motion.div>
-            <div className='flex justify-between'>
+            <div className='flex justify-between gap-0'>
                 <motion.div
-                    className='flex gap-3'
+                    className='flex flex-wrap gap-3'
                     variants={inputVariants(-500)}
                     initial="hidden"
                     animate="visible"
@@ -122,7 +121,7 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
                         <input
                             id='time'
                             type='datetime-local'
-                            className='input-datetime bg-customColorBgOne h-12'
+                            className='input-datetime text-base w-44 bg-customColorBgOne h-12'
                             {...register("deadline", {
                                 required: "Required field"
                             })}
@@ -134,7 +133,7 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
                                     initial="hidden"
                                     animate="visible"
                                     exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
-                                    className='text-red-600 font-bold pl-2'
+                                    className='text-red-600 font-semibold pl-2'
                                 >
                                     {errors.deadline?.message}
                                 </motion.p>
@@ -182,36 +181,29 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
                         }}
                     />
                 </motion.div>
-                <div className='flex gap-3'>
+                <div className='flex flex-wrap w-auto sm:gap-3 sm:w-auto'>
                     <MotionConfig
                         transition={{
                             duration: 0.125,
                             ease: "easeInOut"
                         }}
                     >
-                        <motion.button
-                            type='reset'
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95, rotate: "2.5deg" }}
-                            variants={initialButtonts}
-                            initial="hidden"
-                            animate="visible"
-                            className='btn-clear bg-[#F39C12] h-12'
+                        <Button
                             onClick={handleReset}
+                            className="bg-[#F39C12] h-12 hover:bg-[#6b7280]"
+                            variants={initialButtonts}
+                            type='reset'
                         >
                             Clear
-                        </motion.button>
-                        <motion.button
-                            type='submit'
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95, rotate: "-2.5deg" }}
+                        </Button>
+                        <Button
+                            onClick={handleSubmit(handleAddToDo)}// here
+                            className="bg-[#f95959] h-12"
                             variants={initialButtonts}
-                            initial="hidden"
-                            animate="visible"
-                            className='btn bg-[#f95959] h-12'
+                            type='submit'
                         >
                             Add task
-                        </motion.button>
+                        </Button>
                     </MotionConfig>
                 </div>
             </div>

@@ -1,9 +1,9 @@
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MenuItem } from "./MenuItem";
-import { useAppDispatch } from "../../redux/store";
-import { logout, tokenRemoved } from '../../redux/reducers/AuthSlice';
-import { useLogoutUserMutation } from '../../redux/services/AuthServices';
+import { useAppDispatch } from "../../../redux/store";
+import { logout, tokenRemoved } from '../../../redux/reducers/AuthSlice';
+import { useLogoutUserMutation } from '../../../redux/services/AuthServices';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
