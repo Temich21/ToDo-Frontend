@@ -1,6 +1,6 @@
+import React from 'react'
 import { useState } from 'react'
-import { RootState, useAppDispatch, useAppSelector } from '../../redux/store'
-import { useDeleteToDoMutation, useEditToDoMutation } from '../../redux/services/ToDoServices'
+import { useAppDispatch } from '../../redux/store'
 import { SubmitHandler, useForm } from "react-hook-form"
 import Select from 'react-select'
 import correctColorSetting from '../../utils/correctColorSetting'
@@ -11,11 +11,10 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { ToDoDataResponse } from '../../models/ToDoData'
 import { setEditingId } from "../../redux/reducers/EditToDoSlice"
 import { toast } from 'react-toastify'
-import { GroupToDoDataResponse } from '../../models/GroupToDoData'
 
 interface EditToDoRequest {
   requestId: string
-  editedTodo: any // Not Good
+  editedTodo: any
 }
 
 interface DeleteToDoRequest {
@@ -146,4 +145,4 @@ const ToDoInputEdit = ({ todo, requestId, editToDo, deleteToDo }: ToDoEditProps)
     )
 }
 
-export default ToDoInputEdit
+export default React.memo(ToDoInputEdit)

@@ -9,10 +9,10 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import AnimatedText from '../AnimatedText/AnimatedText'
 import { motion, AnimatePresence } from 'framer-motion'
 import AddNewParticipant from "../AddNewParticipant/AddNewParticipant"
-import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { buttonsVariats, formVariants, inputVariants, movingVariants } from './NewGroupInput.animation'
 import filterExistingParticipants from '../../utils/filterExistingParticipants'
+import Button from '../Button/Button'
 
 const NewGroupInput = () => {
     const { user } = useAppSelector((state: RootState) => state.authReducer)
@@ -29,6 +29,8 @@ const NewGroupInput = () => {
     const handleReset = () => {
         reset()
         setParticipants([])
+        setParticipantInput('')
+        setNewParticipant({} as Participant)
     }
 
     // New Participants Adding
@@ -36,6 +38,10 @@ const NewGroupInput = () => {
     const [activeParticipant, setActiveParticipant] = useState<string>('')
     const [newParticipant, setNewParticipant] = useState<Participant>({} as Participant)
     const [participantInput, setParticipantInput] = useState<string>('')
+    
+    const { data: possibleParticipantsList, isLoading } = useGetRequiredUsersQuery(participantInput, {
+        skip: participantInput.length === 0,
+    })
 
     const handleChooseParticipant = (participant: Participant) => {
         setNewParticipant(participant)
@@ -44,15 +50,15 @@ const NewGroupInput = () => {
 
     const handleAddParticipant = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        setParticipants(currentParticipants => [...currentParticipants, newParticipant])
-        setParticipantInput('')
+        if (Object.keys(newParticipant).length !== 0) {
+            setParticipants(currentParticipants => [...currentParticipants, newParticipant])
+            setParticipantInput('')
+            setNewParticipant({} as Participant)
+        }
     }
 
     // New Group Creating
     const [createNewGroup] = useCreateNewGroupMutation()
-    const { data: possibleParticipantsList, isLoading } = useGetRequiredUsersQuery(participantInput, {
-        skip: participantInput.length === 0,
-    })
 
     const handleCreateNewGroup: SubmitHandler<GroupToDoCreateRequest> = async (data) => {
         try {
@@ -72,15 +78,14 @@ const NewGroupInput = () => {
 
     return (
         <motion.form
-            className='flex flex-col border-2 rounded-md p-2 gap-2 mt-28 mb-4 w-160 shadow-lg'
+            className='flex flex-col border-2 rounded-md p-2 gap-2 mt-28 w-[95%] lg:w-160 shadow-lg'
             variants={formVariants}
             initial="hidden"
             animate="visible"
             onSubmit={handleSubmit(handleCreateNewGroup)}
         >
             <legend
-                className="bg-customColorBgThree text-customColorBorderOne top-31.2 absolute text-2xl font-bold"
-                style={{ left: 'calc(50% + 2rem)' }}
+                className="bg-customColorBgThree text-customColorBorderOne top-31.2 absolute text-2xl font-bold ml-10"
             >
                 <AnimatedText
                     text={'CREATE GROUP TODO'}
@@ -94,7 +99,7 @@ const NewGroupInput = () => {
                 <input
                     id='title'
                     type="text"
-                    className='input w-full text-xl'
+                    className='input w-full text-base md:text-xl'
                     placeholder="Group title"
                     {...register("title", {
                         required: "Required field"
@@ -119,8 +124,7 @@ const NewGroupInput = () => {
                 participantInput={participantInput}
                 handleParticipantInput={(e: React.ChangeEvent<HTMLInputElement>) => setParticipantInput(e.target.value)}
                 handleAddParticipant={handleAddParticipant}
-                possibleParticipantsList={filterExistingParticipants(possibleParticipantsList || [], participants)}
-                usersList={participants}
+                possibleParticipantsList={filterExistingParticipants(possibleParticipantsList || [], participants, user.id)}
                 activeParticipant={activeParticipant}
                 handleChooseParticipant={handleChooseParticipant}
                 isLoading={isLoading}
@@ -166,33 +170,29 @@ const NewGroupInput = () => {
             }
             <div className='flex justify-between'>
                 <div className='flex gap-3'>
-                    <motion.button
-                        type='reset'
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ y: -5 }}
-                        variants={buttonsVariats}
-                        initial="hidden"
-                        animate="visible"
-                        className='btn-clear bg-[#F39C12] h-12'
+                    <Button
                         onClick={handleReset}
+                        className="bg-[#F39C12] h-12 hover:bg-[#6b7280]"
+                        variants={buttonsVariats}
+                        type='reset'
+                        whileTap={{ y: -5 }}
                     >
                         Clear
-                    </motion.button>
-                    <motion.button
-                        type='submit'
-                        whileHover="hover"
-                        whileTap="tap"
+                    </Button>
+                    <Button
+                        onClick={handleSubmit(handleCreateNewGroup)}
+                        className="bg-[#f95959] h-12"
                         variants={buttonsVariats}
-                        initial="hidden"
-                        animate="visible"
-                        className='btn bg-[#f95959] h-12'
+                        type='submit'
+                        whileHover={buttonsVariats.hover}
+                        whileTap={buttonsVariats.tap}
                     >
-                        Create
-                    </motion.button>
+                        Create group
+                    </Button>
                 </div>
             </div>
         </motion.form>
     )
 }
 
-export default NewGroupInput
+export default React.memo(NewGroupInput)

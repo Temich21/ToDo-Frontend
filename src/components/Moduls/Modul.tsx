@@ -19,7 +19,7 @@ const ParticipantsModal = ({ children, onClose }: ParticipantsModalProps) => {
 
     return (
         <div ref={modalRef} onClick={closeModal} className='fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center'>
-            <div className='mt-10 flex flex-col gap-2'>
+            <div className='mt-10 flex flex-col gap-2 w-[95%] lg:w-full lg:max-w-[40rem]'>
                 <motion.button
                     whileHover={{
                         rotate: '180deg'

@@ -4,9 +4,9 @@ import { ToDoDataResponse } from '../../models/ToDoData'
 const CalendarModul = ({ todo }: { todo: ToDoDataResponse }) => {
     return (
         <>
-            <h1 className='text-2xl font-bold mb-3'>{todo.title}</h1>
+            <h1 className='text-2xl font-bold mb-3 break-words hyphens-auto lg:max-w-[39rem]'>{todo.title}</h1>
             <p className='font-semibold'>Description:</p>
-            <p className='mb-3'>{todo.description}</p>
+            <p className='mb-3 break-words hyphens-auto lg:max-w-[39rem]'>{todo.description}</p>
             {todo.groupTitle && <>
                 <p className='font-semibold'>From Group:</p>
                 <p className='mb-3'>{todo.groupTitle}</p>

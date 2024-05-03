@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from "react-hook-form"
 import Select from 'react-select'
@@ -197,7 +198,7 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
                             Clear
                         </Button>
                         <Button
-                            onClick={handleSubmit(handleAddToDo)}// here
+                            onClick={handleSubmit(handleAddToDo)}
                             className="bg-[#f95959] h-12"
                             variants={initialButtonts}
                             type='submit'
@@ -211,4 +212,4 @@ const ToDoInputForm = ({ requestId, author, addToDo }: ToDoInputProps) => {
     )
 }
 
-export default ToDoInputForm
+export default React.memo(ToDoInputForm)

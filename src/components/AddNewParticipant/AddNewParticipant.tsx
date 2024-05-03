@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import LoadingForList from '../Loading/LoadingForList'
 import { Participant } from '../../models/GroupToDoData'
 import { motion, AnimatePresence } from 'framer-motion'
+import Button from '../Button/Button'
 
 interface IAddNewParticipant {
     userId: string,
@@ -9,7 +10,6 @@ interface IAddNewParticipant {
     handleParticipantInput: (e: React.ChangeEvent<HTMLInputElement>) => void,
     handleAddParticipant: (e: React.MouseEvent<HTMLButtonElement>) => void,
     possibleParticipantsList: Participant[],
-    usersList: Participant[],
     activeParticipant: string,
     handleChooseParticipant: (participant: Participant) => void,
     isLoading: boolean
@@ -51,13 +51,12 @@ const AddNewParticipant = ({
     handleParticipantInput,
     handleAddParticipant,
     possibleParticipantsList,
-    usersList,
     activeParticipant,
     handleChooseParticipant,
     isLoading
 }: IAddNewParticipant) => {
     const [isListVisible, setIsListVisible] = useState<boolean>(false)
-    const listRef = useRef<HTMLUListElement>(null)
+    const listRef = useRef<any>(null)
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -66,16 +65,16 @@ const AddNewParticipant = ({
             }
         }
 
-        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('mousedown', handleClickOutside)
 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside)
         }
     }, [])
 
     return (
         <div>
-            <div className='flex'>
+            <div className='flex flex-wrap gap-3'>
                 <motion.div
                     variants={inputVariants}
                     initial='hidden'
@@ -83,23 +82,21 @@ const AddNewParticipant = ({
                 >
                     <input
                         type="text"
-                        className='input w-64'
+                        className='input w-full md:w-72'
                         value={participantInput}
                         placeholder="Participant email or name"
                         onChange={handleParticipantInput}
                         onFocus={() => setIsListVisible(true)}
                     />
                 </motion.div>
-                <motion.button
-                    variants={buttonVariants}
-                    initial='hidden'
-                    animate='visible'
-                    className='btn-clear bg-[#F39C12] h-10 ml-3'
+                <Button
                     onClick={handleAddParticipant}
+                    className="bg-[#F39C12] h-10 hover:bg-[#6b7280] py-0"
+                    variants={buttonVariants}
+                    type='submit'
                 >
                     Add Participant
-                </motion.button>
-
+                </Button>
             </div>
             <AnimatePresence>
                 {participantInput.length > 0 && isListVisible && (
@@ -120,7 +117,6 @@ const AddNewParticipant = ({
                                 animate={{ opacity: 1, transition: { duration: 0.2 } }}
                                 exit={{ opacity: 0, transition: { duration: 0.2 } }}
                             >
-
                                 {possibleParticipantsList.map(participant => (
                                     participant._id !== userId &&
                                     <li
@@ -135,6 +131,7 @@ const AddNewParticipant = ({
                             </motion.ul>
                             :
                             <motion.div
+                                ref={listRef}
                                 className='flex items-center justify-center absolute w-64 h-20 bg-white mt-2 rounded-md text-xl font-bold'
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1, transition: { duration: 0.2 } }}

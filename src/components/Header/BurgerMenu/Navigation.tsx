@@ -38,6 +38,7 @@ const navigation = [
     { id: 1, title: 'Personal ToDo', path: '/personal-todo' },
     { id: 2, title: 'Your Calendar', path: '/calendar' },
     { id: 3, title: 'Your Groups', path: '/groups' },
+    { id: 4, title: 'About The Project', path: '/about' },
 ]
 
 export const Navigation = ({ isOpen }: { isOpen: boolean }) => {

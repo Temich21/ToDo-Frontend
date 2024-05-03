@@ -10,6 +10,8 @@ const currentPageToText = (currentPage: string) => {
             return 'Group ToDo'
         case 'groups':
             return 'Your Groups'
+        case 'about':
+            return 'About The Project'
     }
 }
 

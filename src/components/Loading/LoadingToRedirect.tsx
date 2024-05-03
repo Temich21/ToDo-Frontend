@@ -16,7 +16,7 @@ const LoadingToRedirect = ({ navigation, message }: {navigation: string, message
     }, [count, navigate])
 
     return (
-        <main className="flex justify-center items-center">
+        <main className="flex justify-center items-center pt-20">
             <section className='w-80 bg-customColorBgOne text-xl text-white mt-10 p-4 rounded-sm'>
                 <h1>{message}</h1>
                 <h1>Redirecting you in {count} sec</h1>

@@ -53,8 +53,8 @@ function PersonalToDo() {
                     <AnimatePresence>
                         {todos && todos.map((todo, index) => {
                             const listItemClassName = editingId === todo._id
-                                ? 'flex p-2 gap-2 border-customColorBorderOne border-2 rounded-md'
-                                : 'flex p-2 gap-2'
+                                ? 'flex p-2 justify-between border-customColorBorderOne border-2 rounded-md'
+                                : 'flex p-2 justify-between'
 
                             return (
                                 <motion.li

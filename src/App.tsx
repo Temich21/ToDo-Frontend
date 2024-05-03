@@ -7,6 +7,7 @@ import PublicRoute from "./routes/PublicRoute";
 import Groups from "./pages/Groups";
 import GroupToDo from "./pages/GroupToDo";
 import Calendar from "./pages/Calendar";
+import About from "./pages/About";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/group/:id" element={<GroupToDo />} />
+          <Route path="/about" element={<About />} />
         </Route>
       </Routes>
     </div>

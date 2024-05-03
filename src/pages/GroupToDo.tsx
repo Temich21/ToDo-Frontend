@@ -10,6 +10,8 @@ import GroupToDoFeatures from '../components/GroupCard/GroupToDoFeatures/GroupTo
 import ToDoInputEdit from "../components/ToDoInputEdit/ToDoInputEdit";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
+import LoadingToRedirect from '../components/Loading/LoadingToRedirect';
+import IError from '../models/IError';
 
 const todoVariants = (delay: number) => ({
     hidden: {
@@ -41,14 +43,15 @@ const GroupToDo = () => {
         return <Loading />
     }
 
-    // if (error) {
-    //     return (
-    //         <LoadingToRedirect
-    //             navigation={'/groups'}
-    //             message={error?.data.message || ''}
-    //         />
-    //     )
-    // }
+    if (error) {
+        const e = error as IError
+        return (
+            <LoadingToRedirect
+                navigation={'/groups'}
+                message={e.data.message || ''}
+            />
+        )
+    }
 
     return (
         <main className="flex flex-col items-center pt-10">
@@ -75,26 +78,28 @@ const GroupToDo = () => {
             }
 
             {todos &&
-                <ul>
+                <ul
+                    className="w-[95%] mt-4 lg:w-160"
+                >
                     <AnimatePresence>
                         {todos.map((todo, index) => (
                             todo.author._id === user.id ?
                                 <motion.li
                                     key={todo._id}
-                                    className='flex items-center pr-10'
+                                    className='flex items-center mb-4'
                                     variants={todoVariants(index)}
                                     initial="hidden"
                                     animate="visible"
                                     exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
                                 >
                                     <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-500 text-white text-xl font-medium ring-2 ring-white"
+                                        className="flex items-center justify-center mr-1 h-10 w-10 rounded-full bg-blue-500 text-white text-xl font-medium ring-2 ring-white"
                                     >
                                         {todo.author.name[0]}
                                     </div>
                                     <section className={editingId === todo._id
-                                        ? 'flex p-2 gap-2 m-2 border-customColorBorderOne border-2 rounded-md'
-                                        : 'flex p-2 gap-2 m-2'}>
+                                        ? 'w-[90%] flex gap-2 p-2 border-customColorBorderOne border-2 rounded-md'
+                                        : 'w-[90%] flex gap-2'}>
                                         {editingId === todo._id ?
                                             <ToDoInputEdit
                                                 todo={todo}
@@ -115,13 +120,13 @@ const GroupToDo = () => {
                                 :
                                 <motion.li
                                     key={todo._id}
-                                    className='flex items-center pl-10'
+                                    className='flex items-center mb-4'
                                     variants={todoVariants(index)}
                                     initial="hidden"
                                     animate="visible"
                                     exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
                                 >
-                                    <section className='flex p-2 gap-2 m-2'>
+                                    <section className='flex gap-2 w-[90%]'>
                                         <ToDoCardWithoutEdit todo={todo} />
                                     </section>
 

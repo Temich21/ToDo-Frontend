@@ -21,14 +21,18 @@ const GroupCard = ({ group, delay }: { group: GroupToDoDataInfo, delay: number }
 
     return (
         <motion.div
-            className='flex flex-col gap-4 border-2 border-customColorBorderOne rounded-lg p-4 shadow-lg hover:cursor-pointer'
+            className='flex flex-col gap-4 border-2 max-w-[95%] lg:max-w-[40rem] border-customColorBorderOne rounded-lg p-4 shadow-lg hover:cursor-pointer'
             whileHover={{ scale: 1.1 }}
             variants={groupVariants(delay)}
             initial='hidden'
             animate='visible'
             onClick={() => navigate(`/group/${group._id}`)}
         >
-            <h1 className='text-4xl font-bold text-customColorBorderOne'>{group.title}</h1>
+            <h1
+                className='text-3xl xs:text-4xl font-bold text-customColorBorderOne break-words hyphens-auto'
+            >
+                {group.title}
+            </h1>
             <div className='text-lg font-medium'>
                 <p className='text-customColorBgOne'>Participants:</p>
                 {group.participants.length === 1 ?
@@ -63,4 +67,4 @@ const GroupCard = ({ group, delay }: { group: GroupToDoDataInfo, delay: number }
     )
 }
 
-export default GroupCard
+export default React.memo(GroupCard)

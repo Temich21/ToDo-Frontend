@@ -60,4 +60,4 @@ const CalendarComponent = ({ todos, handleEventClick }: { todos: ToDoDataRespons
     );
 }
 
-export default CalendarComponent
+export default React.memo(CalendarComponent)

@@ -9,8 +9,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import { motion } from "framer-motion";
 import { Participant } from '../../../models/GroupToDoData'
 import filterExistingParticipants from '../../../utils/filterExistingParticipants';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faPersonRunning } from '@fortawesome/free-solid-svg-icons'
+import IError from '../../../models/IError';
+import Button from '../../Button/Button';
 
 const buttonsVariats = {
     hidden: {
@@ -54,12 +54,11 @@ const GroupToDoFeatures = ({ userId, groupId }: { userId: string, groupId: strin
         e.preventDefault()
 
         try {
-            console.log(newParticipant)
             await addNewParticipant({ groupId, newParticipant }).unwrap()
             toast.success("User was added successful")
-        } catch (e) {
-            console.log(e)
-            // toast.error(e.message)
+        } catch (error) {
+            const e = error as IError
+            toast.error(e.data.message)
         }
     }
 
@@ -77,34 +76,24 @@ const GroupToDoFeatures = ({ userId, groupId }: { userId: string, groupId: strin
     }
 
     return (
-        <section>
-
-            <div className="flex w-160 justify-around">
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    variants={buttonsVariats}
-                    initial="hidden"
-                    animate="visible"
-                    className='btn bg-[#ffc93c] h-12'
+        <section className='w-[95%] lg:w-160'>
+            <div className="flex justify-around">
+                <Button
                     onClick={() => setShownPopUpParticipants(true)}
+                    className="bg-[#ffc93c] h-12"
+                    variants={buttonsVariats}
+                    type='submit'
                 >
                     Participants List
-                </motion.button>
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    variants={buttonsVariats}
-                    initial="hidden"
-                    animate="visible"
-                    className='btn bg-[#f76b8a] h-12'
+                </Button>
+                <Button
                     onClick={handleLeaveGroup}
+                    className="bg-[#f76b8a] h-12"
+                    variants={buttonsVariats}
+                    type='submit'
                 >
                     Leave group
-                    {/* <FontAwesomeIcon
-                        icon={faPersonRunning}
-                        className='text-white'
-                        bounce
-                    /> */}
-                </motion.button>
+                </Button>
             </div>
             {
                 shownPopUpParticipants &&
@@ -125,8 +114,7 @@ const GroupToDoFeatures = ({ userId, groupId }: { userId: string, groupId: strin
                         participantInput={participantInput}
                         handleParticipantInput={(e: React.ChangeEvent<HTMLInputElement>) => setParticipantInput(e.target.value)}
                         handleAddParticipant={handleAddParticipant}
-                        possibleParticipantsList={filterExistingParticipants(possibleParticipantsList || [], usersList || [])}
-                        usersList={usersList || []}
+                        possibleParticipantsList={filterExistingParticipants(possibleParticipantsList || [], usersList || [], userId)}
                         activeParticipant={activeParticipant}
                         handleChooseParticipant={handleChooseParticipant}
                         isLoading={isLoading}
@@ -137,4 +125,4 @@ const GroupToDoFeatures = ({ userId, groupId }: { userId: string, groupId: strin
     )
 }
 
-export default GroupToDoFeatures
+export default React.memo(GroupToDoFeatures)

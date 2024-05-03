@@ -26,7 +26,7 @@ const ToDoCardWithoutEdit = ({ todo }: { todo: GroupToDoDataResponse }) => {
                 }
             >
                 <div className='flex justify-between'>
-                    <h3 className='w-144 font-bold text-xl'>
+                    <h3 className='w-full lg:w-148 font-bold text-xl'>
                         {todo.title}
                     </h3>
                 </div>

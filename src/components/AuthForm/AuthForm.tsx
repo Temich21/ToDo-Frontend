@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useState, useCallback } from 'react'
 import type { RootState } from '../../redux/store'
 import { useAppSelector, useAppDispatch } from "../../redux/store"
 import { useLoginUserMutation, useRegistrateUserMutation } from '../../redux/services/AuthServices'
@@ -34,11 +34,10 @@ const AuthForm: FC = () => {
 
     const navigate = useNavigate()
 
-    const handleLogin: SubmitHandler<AuhtLoginRequest> = async (data) => {
+    const handleLogin: SubmitHandler<AuhtLoginRequest> = useCallback(async (data) => {
         try {
             const loginData = { email: data.email, password: data.password }
             const response = await loginUser(loginData).unwrap()
-            console.log(response);
             dispatch(tokenReceived(response))
             toast.success("Login successful", {
                 position: "bottom-right"
@@ -49,16 +48,16 @@ const AuthForm: FC = () => {
             if (e?.data?.errors?.length) {
                 e.data.errors.forEach(errorMsg => {
                     toast.error(errorMsg)
-                });
+                })
             } else {
                 toast.error(e?.data?.message || "Login failed")
             }
         }
-    }
+    }, [loginUser, dispatch, navigate])
 
-    const handleRegistration: SubmitHandler<AuhtRegistrationRequest> = async (data) => {
+    const handleRegistration: SubmitHandler<AuhtRegistrationRequest> = useCallback(async (data) => {
         try {
-            const response = await registrateUser(data).unwrap()
+            const response = await registrateUser(data).unwrap();
             dispatch(tokenReceived(response))
             toast.success("Registration successful")
             navigate('/personal-todo')
@@ -67,12 +66,12 @@ const AuthForm: FC = () => {
             if (e?.data?.errors?.length) {
                 e.data.errors.forEach(errorMsg => {
                     toast.error(errorMsg)
-                });
+                })
             } else {
                 toast.error(e?.data?.message || "Registration failed")
             }
         }
-    }
+    }, [registrateUser, dispatch, navigate])
 
     return (
         <main className="flex flex-col items-center">
@@ -85,10 +84,11 @@ const AuthForm: FC = () => {
                     animate="visible"
                     variants={logoVariants}
                 >
-                    <img
+                    < img
                         src="/Logo.png"
                         alt="Logo"
                         width="120"
+                        loading="lazy"
                     />
                 </motion.div>
             </section>

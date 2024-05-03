@@ -8,12 +8,12 @@ export const groupToDoAPI = createApi({
     tagTypes: ['GroupToDo', 'Group', 'GroupParticipants'],
     endpoints: (builder) => ({
         getGroupTodos: builder.query<GroupToDoDataResponse[], string>({
-            query: (groupId) => `group/${groupId}`,
+            query: (groupId) => `group/get/${groupId}`,
             providesTags: ['GroupToDo']
         }),
         addGroupTodo: builder.mutation<void, GroupToDoAddRequest>({
             query: ({ requestId, newToDo }) => ({
-                url: `group/${requestId}`,
+                url: `group/add/${requestId}`,
                 method: 'POST',
                 body: newToDo
             }),
@@ -21,7 +21,7 @@ export const groupToDoAPI = createApi({
         }),
         editToDo: builder.mutation<void, GroupToDoEditRequest>({
             query: ({ requestId, editedTodo }) => ({
-                url: `group/${requestId}`,
+                url: `group/edit/${requestId}`,
                 method: 'PUT',
                 body: editedTodo
             }),
@@ -29,7 +29,7 @@ export const groupToDoAPI = createApi({
         }),
         deleteToDo: builder.mutation<void, GroupToDoDeleteRequest>({
             query: ({ requestId, todoId }) => ({
-                url: `group/${requestId}/${todoId}`,
+                url: `group/delete/${requestId}/${todoId}`,
                 method: 'DELETE'
             }),
             invalidatesTags: ['GroupToDo']
@@ -48,7 +48,7 @@ export const groupToDoAPI = createApi({
         }),
         getRequiredUsers: builder.query<Participant[], string>({
             query: (emailOrName) => ({
-                url: `groups/users`,
+                url: `groups/users/list`,
                 method: 'GET',
                 params: {
                     emailOrName

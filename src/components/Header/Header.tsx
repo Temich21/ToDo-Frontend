@@ -17,18 +17,19 @@ const Header = () => {
     const currentPage = location.pathname
 
     return (
-        <header className="fixed w-full flex items-center px-10 py-3 z-10 bg-customColorBgTwo">
+        <header className="fixed w-full flex items-center px-5 2xs:px-10 py-3 z-10 bg-customColorBgTwo">
             <BurgerMenu />
             <section className='flex justify-end w-full md:justify-center'>
-                {/* <div className='grid grid-flow-col gap-4 items-center'>
+                <div className='grid grid-cols-[1fr_70px] grid-rows-2 items-center md:flex md:gap-4'>
                     <AnimatedText
                         text={'QuestList'}
-                        styles={'text-3xl font-rakkas'}
+                        styles={'col-start-1 col-end-2 row-start-1 row-end-2 text-3xl font-rakkas'}
                     />
                     <motion.div
                         initial="hidden"
                         animate="visible"
                         variants={logoVariants}
+                        className="col-start-2 col-end-3 row-span-full"
                     >
                         <img
                             src="/Logo.png"
@@ -38,30 +39,7 @@ const Header = () => {
                     </motion.div>
                     <AnimatedText
                         text={currentPageToText(currentPage) || ''}
-                        styles={'text-3xl font-rakkas'}
-                        animationProps={{ delay: 1 }}
-                    />
-                </div> */}
-                <div className='grid grid-cols-3 items-center gap-4'>
-                    <AnimatedText
-                        text={'QuestList'}
-                        styles={'text-3xl font-rakkas col-span-2'}
-                    />
-                    <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        variants={logoVariants}
-                        className="col-start-3"
-                    >
-                        <img
-                            src="/Logo.png"
-                            alt="Logo"
-                            width="70"
-                        />
-                    </motion.div>
-                    <AnimatedText
-                        text={currentPageToText(currentPage) || ''}
-                        styles={'text-3xl font-rakkas col-span-2'}
+                        styles={'col-start-1 col-end-2 row-start-2 row-end-3 text-3xl font-rakkas'}
                         animationProps={{ delay: 1 }}
                     />
                 </div>

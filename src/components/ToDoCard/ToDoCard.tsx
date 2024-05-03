@@ -1,3 +1,4 @@
+import React from "react"
 import { useAppDispatch } from "../../redux/store"
 import { setEditingId } from "../../redux/reducers/EditToDoSlice"
 import { ToDoDataResponse } from '../../models/ToDoData'
@@ -65,8 +66,8 @@ const ToDoCard = ({ todo, requestId, editToDo, deleteToDo }: ToDoCardProps) => {
           todo.completed ? { textDecoration: 'line-through', textDecorationThickness: '2px' } : {}
         }
       >
-        <div className='flex justify-between'>
-          <h3 className='font-bold text-xl'>
+        <div className='flex w-full'>
+          <h3 className='font-bold text-xl break-words hyphens-auto w-full lg:max-w-[33rem]'>
             {todo.title}
           </h3>
           <div className='flex gap-4'>
@@ -81,7 +82,7 @@ const ToDoCard = ({ todo, requestId, editToDo, deleteToDo }: ToDoCardProps) => {
             />
           </div>
         </div>
-        <p className="font-medium">{todo.description}</p>
+        <p className="font-medium max-w-[98%] break-words hyphens-auto">{todo.description}</p>
         <div className='flex gap-6'>
           <div className="font-medium">{moment(todo.deadline).format('DD-MM-YYYY HH:mm')}</div>
           <div className="flex items-center gap-2">
@@ -97,4 +98,4 @@ const ToDoCard = ({ todo, requestId, editToDo, deleteToDo }: ToDoCardProps) => {
   )
 }
 
-export default ToDoCard
+export default React.memo(ToDoCard)
