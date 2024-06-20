@@ -19,6 +19,6 @@ The web application, developed on the MERN stack (MongoDB, Express, React, and N
 ## Database
 For the database, MongoDB is utilized with the following structure:
 
-![Alt text](https://example.com/path/to/image.png)
+![Database structure](https://ibb.co/PQ4YyyL)
 
 You can find more details about the frontend and backend on my GitHub.
