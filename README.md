@@ -21,4 +21,4 @@ For the database, MongoDB is utilized with the following structure:
 
 ![Database Structure](/public/Data%20Structure.jpg)
 
-You can find more details about the frontend and backend on my GitHub.
+You can find more details about the [frontend](https://github.com/Temich21/ToDo-Frontend) and [backend](https://github.com/Temich21/ToDo-Backend) on my GitHub.
